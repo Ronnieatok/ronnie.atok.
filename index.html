@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ronnie Atok - Web Developer, Photographer & Creative Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+<style>
+/* ── RESET & VARS ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --coral:   #f50000;
+  --coral-d: #ff1e0079;
+  --coral-l: #f5ede9;
+  --dark:    #1a1a1a;
+  --mid:     #4a4a4a;
+  --soft:    #8a8a8a;
+  --border:  #e8e4e0;
+  --bg:      #f7f5f2;
+  --white:   #ffffff;
+  --sidebar: #1e1e1e;
+  --card:    #ffffff;
+  --shadow:  0 4px 24px rgba(0,0,0,0.08);
+  --shadow-h:0 8px 40px rgba(224,108,78,0.22);
+  --r:       14px;
+}
+html{scroll-behavior:smooth;font-size:16px;}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--dark);
+  overflow-x:hidden;
+}
+
+/* ── LAYOUT ── */
+.layout{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  min-height:100vh;
+}
+
+/* ══════════════════════════════
+   SIDEBAR
+══════════════════════════════ */
+.sidebar{
+  position:fixed;
+  top:0;left:0;bottom:0;
+  width:260px;
+  background:var(--sidebar);
+  display:flex;flex-direction:column;
+  align-items:center;
+  padding:2.5rem 1.5rem;
+  z-index:100;
+  overflow-y:auto;
+}
+.sidebar-avatar{
+  width:100px;height:100px;
+  border-radius:50%;
+  border:3px solid var(--coral);
+  overflow:hidden;
+  margin-bottom:1.2rem;
+  box-shadow:0 0 0 6px rgba(224,108,78,0.18);
+}
+.sidebar-avatar img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:center top;
+}
+.sidebar-name{
+  font-family:'DM Serif Display',serif;
+  font-size:1.25rem;
+  color:#fff;
+  margin-bottom:0.35rem;
+  text-align:center;
+}
+.sidebar-title{
+  font-size:0.72rem;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--coral);
+  margin-bottom:2rem;
+  text-align:center;
+}
+.sidebar-divider{
+  width:40px;height:2px;
+  background:var(--coral);
+  border-radius:2px;
+  margin-bottom:2rem;
+}
+.sidebar-nav{
+  list-style:none;
+  width:100%;
+  display:flex;flex-direction:column;
+  gap:0.25rem;
+  margin-bottom:auto;
+}
+.sidebar-nav li{position:relative;}
+.sidebar-nav a{
+  display:flex;align-items:center;gap:0.65rem;
+  padding:0.7rem 1rem;
+  font-size:0.78rem;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  font-weight:500;
+  color:#9a9a9a;
+  text-decoration:none;
+  border-radius:8px;
+  transition:color 0.3s,background 0.3s;
+}
+.sidebar-nav a i{width:16px;text-align:center;font-size:0.82rem;}
+.sidebar-nav a:hover,
+.sidebar-nav a.active{
+  color:#fff;
+  background:rgba(224,108,78,0.15);
+}
+.sidebar-nav a.active{color:var(--coral);}
+
+.sidebar-socials{
+  display:flex;gap:0.6rem;
+  margin-top:2rem;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.sidebar-socials a{
+  width:34px;height:34px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,0.12);
+  display:flex;align-items:center;justify-content:center;
+  color:#9a9a9a;font-size:0.82rem;
+  text-decoration:none;
+  transition:all 0.3s;
+}
+.sidebar-socials a:hover{
+  background:var(--coral);
+  border-color:var(--coral);
+  color:#fff;
+  transform:translateY(-2px);
+}
+
+/* Mobile sidebar toggle */
+.mob-toggle{
+  display:none;
+  position:fixed;top:1rem;left:1rem;z-index:200;
+  width:42px;height:42px;
+  background:var(--sidebar);
+  border-radius:10px;
+  border:none;cursor:pointer;
+  flex-direction:column;gap:5px;
+  align-items:center;justify-content:center;
+}
+.mob-toggle span{display:block;width:20px;height:2px;background:#fff;transition:all 0.3s;}
+.mob-toggle.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+.mob-toggle.open span:nth-child(2){opacity:0;}
+.mob-toggle.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+
+/* Sidebar Overlay */
+.sidebar-overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.7);
+  z-index:150;
+  display:none;
+  cursor:pointer;
+}
+
+/* ══════════════════════════════
+   MAIN CONTENT
+══════════════════════════════ */
+.main{
+  margin-left:260px;
+  padding:0;
+}
+
+/* ── SECTION BASE ── */
+section{
+  padding:5rem 4rem;
+  min-height:100vh;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.section-label{
+  font-size:0.72rem;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:var(--coral);
+  font-weight:500;
+  margin-bottom:0.6rem;
+}
+.section-title{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2.2rem,4vw,3.4rem);
+  line-height:1.1;
+  color:var(--dark);
+  margin-bottom:0.5rem;
+}
+.section-title em{font-style:italic;color:var(--coral);}
+.section-rule{
+  width:50px;height:3px;
+  background:var(--coral);
+  border-radius:3px;
+  margin-bottom:2.5rem;
+}
+
+/* ══════════════════════════════
+   HERO
+══════════════════════════════ */
+#home{
+  background:var(--white);
+  position:relative;
+  overflow:hidden;
+  padding-top:0;padding-bottom:0;
+  min-height:100vh;
+}
+.hero-inner{
+  display:grid;
+  grid-template-columns:1fr 420px;
+  gap:3rem;
+  align-items:center;
+  min-height:100vh;
+  padding:5rem 4rem;
+}
+.hero-greeting{
+  font-size:0.9rem;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--soft);
+  font-weight:500;
+  margin-bottom:0.75rem;
+}
+.hero-name{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(3rem,6vw,5.5rem);
+  line-height:0.95;
+  margin-bottom:1rem;
+}
+.hero-name span{color:var(--coral);}
+.hero-badge{
+  display:inline-block;
+  background:var(--coral);
+  color:#fff;
+  font-size:0.72rem;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  font-weight:600;
+  padding:0.4rem 1.1rem;
+  border-radius:4px;
+  margin-bottom:1.5rem;
+}
+.hero-bio{
+  font-size:1rem;
+  color:var(--mid);
+  line-height:1.8;
+  max-width:480px;
+  margin-bottom:2.2rem;
+}
+.hero-ctas{display:flex;gap:1rem;flex-wrap:wrap;}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:var(--coral);
+  color:#fff;
+  padding:0.85rem 2rem;
+  border-radius:50px;
+  font-size:0.82rem;
+  font-weight:600;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  text-decoration:none;
+  border:2px solid var(--coral);
+  transition:all 0.3s;
+  cursor:pointer;
+}
+.btn-primary:hover{
+  background:var(--coral-d);
+  border-color:var(--coral-d);
+  transform:translateY(-2px);
+  box-shadow:var(--shadow-h);
+}
+.btn-outline{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:transparent;
+  color:var(--coral);
+  padding:0.85rem 2rem;
+  border-radius:50px;
+  font-size:0.82rem;
+  font-weight:600;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  text-decoration:none;
+  border:2px solid var(--coral);
+  transition:all 0.3s;
+  cursor:pointer;
+}
+.btn-outline:hover{
+  background:var(--coral);
+  color:#fff;
+  transform:translateY(-2px);
+}
+
+.hero-image{
+  position:relative;
+  display:flex;justify-content:center;
+}
+.hero-img-wrap{
+  width:380px;height:460px;
+  border-radius:24px;
+  overflow:hidden;
+  position:relative;
+  box-shadow:0 24px 64px rgba(0,0,0,0.14);
+}
+.hero-img-wrap img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:center top;
+}
+.hero-img-badge{
+  position:absolute;
+  bottom:-16px;right:-16px;
+  background:var(--coral);
+  color:#fff;
+  width:90px;height:90px;
+  border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;
+  box-shadow:0 8px 24px rgba(224,108,78,0.4);
+  font-weight:700;
+  font-size:1.1rem;
+  line-height:1.1;
+}
+.hero-img-badge small{font-size:0.6rem;letter-spacing:0.08em;font-weight:500;}
+.hero-deco{
+  position:absolute;
+  top:-24px;left:-24px;
+  width:120px;height:120px;
+  border:3px dashed rgba(224,108,78,0.25);
+  border-radius:50%;
+  pointer-events:none;
+}
+.hero-scroll{
+  position:absolute;
+  bottom:2.5rem;left:50%;
+  transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:0.5rem;
+  color:var(--soft);
+  font-size:0.7rem;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  animation:bounce 2s ease-in-out infinite;
+}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-6px)}}
+.hero-scroll-line{width:1px;height:32px;background:linear-gradient(to bottom,var(--coral),transparent);}
+
+/* ══════════════════════════════
+   ABOUT
+══════════════════════════════ */
+#about{background:var(--bg);}
+.about-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:4rem;
+  align-items:start;
+}
+.about-text p{
+  font-size:1rem;
+  color:var(--mid);
+  line-height:1.85;
+  margin-bottom:1.2rem;
+}
+.about-text p strong{color:var(--dark);font-weight:600;}
+.about-details{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:0.75rem;
+  margin-top:1.5rem;margin-bottom:2rem;
+}
+.about-detail{
+  display:flex;align-items:center;gap:0.6rem;
+  font-size:0.88rem;color:var(--mid);
+}
+.about-detail i{color:var(--coral);width:16px;}
+
+.stats-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1rem;
+}
+.stat-card{
+  background:var(--dark);
+  color:#fff;
+  border-radius:var(--r);
+  padding:1.5rem;
+  position:relative;
+  overflow:hidden;
+  transition:transform 0.3s;
+}
+.stat-card:hover{transform:translateY(-4px);}
+.stat-card::after{
+  content:'';
+  position:absolute;bottom:0;right:0;
+  width:60px;height:60px;
+  background:var(--coral);
+  border-radius:50% 0 0 0;
+  opacity:0.15;
+}
+.stat-num{
+  font-family:'DM Serif Display',serif;
+  font-size:2.8rem;
+  color:var(--coral);
+  line-height:1;
+  margin-bottom:0.3rem;
+}
+.stat-label{
+  font-size:0.75rem;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:#9a9a9a;
+}
+
+.services-grid{
+  display:grid;gap:1rem;
+  margin-top:2rem;
+}
+.service-card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  padding:1.2rem 1.4rem;
+  display:flex;align-items:center;gap:1rem;
+  transition:all 0.3s;
+}
+.service-card:hover{
+  border-color:var(--coral);
+  box-shadow:var(--shadow-h);
+  transform:translateX(4px);
+}
+.service-icon{
+  width:44px;height:44px;
+  background:var(--coral-l);
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--coral);
+  font-size:1.1rem;
+  flex-shrink:0;
+}
+.service-title{font-size:0.9rem;font-weight:600;margin-bottom:0.2rem;}
+.service-desc{font-size:0.8rem;color:var(--soft);}
+
+/* ══════════════════════════════
+   RESUME
+══════════════════════════════ */
+#resume{background:var(--white);}
+.resume-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:3rem;
+}
+.resume-col h3{
+  font-family:'DM Serif Display',serif;
+  font-size:1.4rem;
+  margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:0.6rem;
+}
+.resume-col h3 i{color:var(--coral);font-size:1rem;}
+.timeline{display:flex;flex-direction:column;gap:0;position:relative;}
+.timeline::before{
+  content:'';
+  position:absolute;left:7px;top:8px;bottom:8px;
+  width:2px;background:var(--border);
+}
+.tl-item{
+  padding-left:2.2rem;
+  padding-bottom:1.8rem;
+  position:relative;
+}
+.tl-item::before{
+  content:'';
+  position:absolute;left:0;top:8px;
+  width:14px;height:14px;
+  border-radius:50%;
+  background:var(--coral);
+  border:3px solid var(--white);
+  box-shadow:0 0 0 2px var(--coral);
+  z-index:1;
+}
+.tl-date{
+  font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--coral);font-weight:600;margin-bottom:0.35rem;
+}
+.tl-title{font-size:0.95rem;font-weight:700;margin-bottom:0.2rem;}
+.tl-org{font-size:0.82rem;color:var(--soft);margin-bottom:0.4rem;}
+.tl-desc{font-size:0.83rem;color:var(--mid);line-height:1.65;}
+
+.skills-list{display:flex;flex-direction:column;gap:0.9rem;margin-top:1rem;}
+.skill-item{}
+.skill-meta{display:flex;justify-content:space-between;margin-bottom:0.4rem;font-size:0.85rem;}
+.skill-pct{font-weight:600;color:var(--coral);}
+.skill-bar{height:4px;background:var(--border);border-radius:4px;overflow:hidden;}
+.skill-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--coral-d),var(--coral));
+  border-radius:4px;
+  transition:width 1.4s cubic-bezier(0.4,0,0.2,1);
+  width:0;
+}
+.resume-download{
+  grid-column:1/-1;
+  display:flex;justify-content:center;
+  padding-top:2rem;
+}
+
+/* ══════════════════════════════
+   PORTFOLIO
+══════════════════════════════ */
+#portfolio{background:var(--bg);}
+.filter-row{
+  display:flex;gap:0.6rem;flex-wrap:wrap;
+  margin-bottom:2.5rem;
+}
+.filter-btn{
+  padding:0.5rem 1.3rem;
+  border-radius:50px;
+  border:1.5px solid var(--border);
+  background:transparent;
+  font-family:inherit;
+  font-size:0.78rem;
+  font-weight:500;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  color:var(--soft);
+  cursor:pointer;
+  transition:all 0.3s;
+}
+.filter-btn:hover{border-color:var(--coral);color:var(--coral);}
+.filter-btn.active{
+  background:var(--coral);
+  border-color:var(--coral);
+  color:#fff;
+  box-shadow:0 4px 14px rgba(224,108,78,0.3);
+}
+.portfolio-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:1.5rem;
+}
+.port-card{
+  background:var(--white);
+  border-radius:var(--r);
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  transition:transform 0.4s,box-shadow 0.4s,opacity 0.4s;
+}
+.port-card:hover{transform:translateY(-6px);box-shadow:0 16px 48px rgba(0,0,0,0.12);}
+.port-card.hidden{display:none;}
+.port-thumb{
+  width:100%;height:190px;
+  position:relative;overflow:hidden;
+}
+.port-thumb-img{
+  width:100%;height:100%;
+  object-fit:cover;
+  transition:transform 0.5s ease;
+}
+.port-card:hover .port-thumb-img{transform:scale(1.06);}
+.port-thumb-placeholder{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.75rem;
+  font-size:2.5rem;
+  transition:transform 0.5s ease;
+}
+.port-card:hover .port-thumb-placeholder{transform:scale(1.06);}
+.port-overlay{
+  position:absolute;inset:0;
+  background:rgba(224,108,78,0.85);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity 0.3s;
+}
+.port-card:hover .port-overlay{opacity:1;}
+.port-overlay a{
+  color:#fff;font-size:0.78rem;font-weight:600;
+  letter-spacing:0.12em;text-transform:uppercase;
+  text-decoration:none;
+  border:1.5px solid rgba(255,255,255,0.7);
+  padding:0.55rem 1.2rem;border-radius:50px;
+  transition:background 0.3s;
+}
+.port-overlay a:hover{background:rgba(255,255,255,0.2);}
+.port-cat-badge{
+  position:absolute;top:12px;left:12px;
+  background:var(--coral);color:#fff;
+  font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;
+  font-weight:600;padding:0.25rem 0.7rem;border-radius:50px;
+}
+.port-body{padding:1.2rem 1.3rem 1.4rem;}
+.port-title{font-size:0.98rem;font-weight:700;margin-bottom:0.35rem;}
+.port-desc{font-size:0.82rem;color:var(--soft);line-height:1.65;margin-bottom:0.9rem;}
+.port-tags{display:flex;flex-wrap:wrap;gap:0.35rem;}
+.port-tag{
+  font-size:0.68rem;letter-spacing:0.06em;text-transform:uppercase;
+  background:var(--coral-l);color:var(--coral);
+  padding:0.18rem 0.55rem;border-radius:4px;font-weight:500;
+}
+
+/* ══════════════════════════════
+   TESTIMONIALS
+══════════════════════════════ */
+#testimonials{background:var(--white);}
+.testi-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:1.5rem;
+}
+.testi-card{
+  background:var(--bg);
+  border-radius:var(--r);
+  padding:2rem;
+  position:relative;
+  border:1px solid var(--border);
+  transition:all 0.3s;
+}
+.testi-card:hover{
+  border-color:var(--coral);
+  box-shadow:var(--shadow-h);
+  transform:translateY(-4px);
+}
+.testi-quote-icon{
+  font-size:3rem;line-height:1;
+  color:var(--coral);opacity:0.18;
+  position:absolute;top:1.2rem;right:1.5rem;
+  font-family:'DM Serif Display',serif;
+}
+.testi-stars{
+  color:var(--coral);font-size:0.85rem;
+  margin-bottom:1rem;letter-spacing:2px;
+}
+.testi-text{
+  font-size:0.92rem;color:var(--mid);
+  line-height:1.8;margin-bottom:1.5rem;
+  font-style:italic;
+}
+.testi-author{display:flex;align-items:center;gap:0.75rem;}
+.testi-avatar{
+  width:46px;height:46px;border-radius:50%;
+  background:var(--coral);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:700;font-size:1rem;
+  flex-shrink:0;
+}
+.testi-name{font-weight:700;font-size:0.9rem;}
+.testi-role{font-size:0.75rem;color:var(--soft);}
+
+/* ══════════════════════════════
+   CONTACT
+══════════════════════════════ */
+#contact{background:var(--bg);}
+.contact-grid{
+  display:grid;
+  grid-template-columns:1fr 1.4fr;
+  gap:4rem;
+  align-items:start;
+}
+.contact-info{display:flex;flex-direction:column;gap:1.2rem;}
+.contact-intro{font-size:1rem;color:var(--mid);line-height:1.8;margin-bottom:0.5rem;}
+.cinfo-item{
+  display:flex;align-items:center;gap:1rem;
+  padding:1rem 1.2rem;
+  background:var(--white);
+  border-radius:12px;
+  border:1px solid var(--border);
+  transition:all 0.3s;
+}
+.cinfo-item:hover{border-color:var(--coral);box-shadow:var(--shadow-h);}
+.cinfo-icon{
+  width:42px;height:42px;border-radius:10px;
+  background:var(--coral-l);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--coral);font-size:1rem;flex-shrink:0;
+}
+.cinfo-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--soft);margin-bottom:0.15rem;}
+.cinfo-val{font-size:0.9rem;font-weight:600;color:var(--dark);}
+.cinfo-val a{color:var(--dark);text-decoration:none;transition:color 0.3s;}
+.cinfo-val a:hover{color:var(--coral);}
+
+.contact-form{display:flex;flex-direction:column;gap:1.1rem;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.fg{display:flex;flex-direction:column;gap:0.38rem;}
+.fl{font-size:0.75rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--mid);}
+.fi{
+  background:var(--white);
+  border:1.5px solid var(--border);
+  border-radius:10px;
+  padding:0.85rem 1rem;
+  font-family:inherit;font-size:0.92rem;
+  color:var(--dark);outline:none;
+  transition:border-color 0.3s,box-shadow 0.3s;
+}
+.fi:focus{border-color:var(--coral);box-shadow:0 0 0 3px rgba(224,108,78,0.12);}
+.fi::placeholder{color:#c0b8b2;}
+textarea.fi{resize:vertical;min-height:130px;}
+.thanks-msg{
+  text-align:center;
+  font-size:1rem;font-weight:600;
+  color:var(--coral);
+  padding:1rem;
+  display:none;
+  animation:fadeUp 0.4s ease;
+}
+
+/* ══════════════════════════════
+   FOOTER
+══════════════════════════════ */
+footer{
+  background:var(--dark);
+  color:#fff;
+  padding:3rem 4rem;
+}
+.footer-inner{
+  display:flex;flex-direction:column;align-items:center;
+  gap:1.5rem;
+}
+.footer-logo{
+  font-family:'DM Serif Display',serif;
+  font-size:1.6rem;
+}
+.footer-logo span{color:var(--coral);}
+.footer-nav{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:0.5rem 2rem;
+  list-style:none;
+}
+.footer-nav a{
+  font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;
+  color:#9a9a9a;text-decoration:none;
+  transition:color 0.3s;
+}
+.footer-nav a:hover{color:var(--coral);}
+.footer-copy{
+  font-size:0.8rem;color:#6a6a6a;text-align:center;line-height:1.7;
+}
+.footer-thanks{
+  font-family:'DM Serif Display',serif;
+  font-size:1.1rem;font-style:italic;
+  color:var(--coral);letter-spacing:0.04em;
+}
+
+/* ══════════════════════════════
+   ANIMATIONS
+══════════════════════════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideR{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+
+/* Progressive enhancement: elements visible by default */
+.reveal{opacity:1;transform:none;}
+/* Only hide when JS has confirmed it's running */
+.js-ready .reveal{opacity:0;transform:translateY(22px);transition:opacity 0.55s ease,transform 0.55s ease;}
+.js-ready .reveal.in{opacity:1 !important;transform:none !important;}
+/* Fallback: if JS fails or preview context, show everything */
+@media (prefers-reduced-motion: reduce){
+  .reveal,.js-ready .reveal,.reveal.in,.js-ready .reveal.in{
+    opacity:1 !important;transform:none !important;transition:none !important;
+  }
+}
+
+/* ══════════════════════════════
+   RESPONSIVE
+══════════════════════════════ */
+/* ── 1100px ── */
+@media(max-width:1100px){
+  .hero-inner{grid-template-columns:1fr;text-align:center;padding:6rem 3rem 3rem;}
+  .hero-image{display:none;}
+  .hero-bio{margin:0 auto 2rem;}
+  .hero-ctas{justify-content:center;}
+  .about-grid{grid-template-columns:1fr;}
+  .resume-grid{grid-template-columns:1fr;}
+  .contact-grid{grid-template-columns:1fr;}
+  .testi-grid{grid-template-columns:1fr 1fr;}
+}
+/* ── 900px: sidebar becomes overlay ── */
+@media(max-width:900px){
+  #home{ padding-top: 5rem; }
+  .sidebar{
+    transform:translateX(-100%);
+    transition:transform 0.35s ease;
+    width:260px;
+    z-index:300;
+  }
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-left:0;}
+  .mob-toggle{display:flex;}
+  section{padding:5rem 2rem;}
+  footer{padding:2.5rem 2rem;}
+  .form-row{grid-template-columns:1fr;}
+  .testi-grid{grid-template-columns:1fr;}
+  .portfolio-grid{grid-template-columns:1fr 1fr;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .about-details{grid-template-columns:1fr;}
+  .resume-grid{gap:2rem;}
+}
+/* ── 600px ── */
+@media(max-width:600px){
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .hero-inner{padding:5rem 1.2rem 3rem;}
+  section{padding:4rem 1.2rem;}
+  footer{padding:2rem 1.2rem;}
+  .portfolio-grid{grid-template-columns:1fr;}
+  .filter-row{gap:0.4rem;}
+  .filter-btn{padding:0.4rem 0.9rem;font-size:0.7rem;}
+  .section-title{font-size:2rem;}
+  .hero-name{font-size:2.8rem;}
+  .testi-grid{grid-template-columns:1fr;}
+  .resume-grid{grid-template-columns:1fr;}
+  .about-details{grid-template-columns:1fr;}
+  .hero-ctas{flex-direction:column;align-items:center;}
+  .btn-primary,.btn-outline{width:100%;justify-content:center;}
+  .stat-num{font-size:2.2rem;}
+  .resume-download{padding-top:1rem;}
+  .footer-nav{gap:0.4rem 1.2rem;}
+  .contact-info{gap:0.8rem;}
+}
+/* ── 400px ── */
+@media(max-width:400px){
+  section{padding:3.5rem 1rem;}
+  .stats-grid{grid-template-columns:1fr;}
+  .hero-name{font-size:2.4rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── MOBILE TOGGLE ── -->
+<button class="mob-toggle" id="mobToggle" aria-label="Menu">
+  <span></span><span></span><span></span>
+</button>
+
+<!-- ══════════════════════════════
+     SIDEBAR
+══════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-avatar">
+    <img src="https://i.postimg.cc/Hk32HQVQ/ronnieatok3.png" alt="Ronnie Atok">
+  </div>
+  <p class="sidebar-name">Ronnie Atok</p>
+  <p class="sidebar-title">Dev & Photographer</p>
+  <div class="sidebar-divider"></div>
+  <ul class="sidebar-nav" id="sidebarNav">
+    <li><a href="#home" class="active"><i class="fas fa-home"></i> Home</a></li>
+    <li><a href="#about"><i class="fas fa-user"></i> About Me</a></li>
+    <li><a href="#resume"><i class="fas fa-file-alt"></i> Resume</a></li>
+    <li><a href="#portfolio"><i class="fas fa-briefcase"></i> Portfolio</a></li>
+    <li><a href="#testimonials"><i class="fas fa-comments"></i> Testimonials</a></li>
+    <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+  </ul>
+  <div class="sidebar-socials">
+    <a href="https://github.com/Ronnieatok" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+    <a href="https://instagram.com/notjustatok" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://wa.me/254705902590" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://facebook.com/ronnie.atok.1998" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://linkedin.com/in/ronnieatok" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+  </div>
+</aside>
+
+<!-- ══════════════════════════════
+     MAIN
+══════════════════════════════ -->
+<main class="main">
+
+  <!-- ── HERO ── -->
+  <section id="home">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <p class="hero-greeting">Welcome to my portfolio</p>
+        <h1 class="hero-name">HI THERE!<br>I'M <span>RONNIE</span></h1>
+        <div class="hero-badge">Web Developer / Photographer / Creative Designer</div>
+        <p class="hero-bio">
+          I build beautiful, fast web experiences and capture the world through my lens.
+          Based in Nairobi, Kenya, passionate about clean code, visual storytelling,
+          and crafting digital designs that make a real difference.
+        </p>
+        <div class="hero-ctas">
+          <a href="#portfolio" class="btn-primary"><i class="fas fa-eye"></i> View My Work</a>
+          <a href="#contact" class="btn-outline"><i class="fas fa-paper-plane"></i> Hire Me</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="hero-deco"></div>
+        <div class="hero-img-wrap"><img src="https://i.postimg.cc/Hk32HQVQ/ronnieatok3.png" alt="Ronnie Atok"/>
+        </div>
+        <div class="hero-img-badge">
+          <span>3+</span>
+          <small>Years Exp.</small>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ── ABOUT ── -->
+  <section id="about">
+    <p class="section-label">Who I Am</p>
+    <h2 class="section-title">About <em>Me</em></h2>
+    <div class="section-rule"></div>
+    <div class="about-grid">
+      <div>
+        <div class="about-text">
+          <p>I'm <strong>Ronnie Atok</strong>, a front-end developer, photographer, and creative designer from <strong>Nairobi, Kenya</strong>. I combine technical expertise with creative vision to craft clean, responsive web interfaces and compelling visual stories.</p>
+          <p>My work focuses on building digital products that improve access to services, streamline everyday processes, and create real impact for communities. When I'm not coding, I'm behind the camera exploring new ways to blend technology with life.</p>
+        </div>
+        <div class="about-details">
+          <div class="about-detail"><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</div>
+          <div class="about-detail"><i class="fas fa-envelope"></i> ronnieatok@gmail.com</div>
+          <div class="about-detail"><i class="fab fa-github"></i> Ronnieatok</div>
+          <div class="about-detail"><i class="fab fa-instagram"></i> notjustatok</div>
+        </div>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+          <a href="#portfolio" class="btn-primary" style="font-size:0.78rem;padding:0.7rem 1.6rem;">
+            <i class="fas fa-folder-open"></i> My Portfolio
+          </a>
+          <a href="https://docs.google.com/document/d/1P3BsOB6tOEwk3fDXt470acNueg0J1sPZ5xJwa4Ojlqs/edit?tab=t.0" class="btn-outline" style="font-size:0.78rem;padding:0.7rem 1.6rem;" target="_blank">
+           <i class="fa-solid fa-eye"></i> View CV
+          </a>
+        </div>
+        <div class="services-grid" style="margin-top:2rem;">
+          <div class="service-card">
+            <div class="service-icon"><i class="fas fa-code"></i></div>
+            <div><div class="service-title">Web Development</div><div class="service-desc">React, TypeScript, HTML/CSS, JavaScript, PHP — clean, fast, responsive sites</div></div>
+          </div>
+          <div class="service-card">
+            <div class="service-icon"><i class="fas fa-camera"></i></div>
+            <div><div class="service-title">Photography</div><div class="service-desc">Portrait, street, and event photography with a cinematic eye</div></div>
+          </div>
+          <div class="service-card">
+            <div class="service-icon"><i class="fas fa-pencil-ruler"></i></div>
+            <div><div class="service-title">UI/UX Design</div><div class="service-desc">User-centred interfaces, wireframes, and brand identity</div></div>
+          </div>
+           <div class="service-card">
+            <div class="service-icon"><i class="fa-brands fa-angrycreative"></i></div>
+            <div><div class="service-title">Creative Design</div><div class="service-desc">Crafting visual stories, building intuitive user interfaces, designing wireframes and prototypes, developing brand identity systems, selecting color palettes and typography, creating logos, and ensuring consistent user experiences across digital products.</div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="stats-grid">
+          <div class="stat-card reveal">
+            <div class="stat-num">15+</div>
+            <div class="stat-label">Projects Done</div>
+          </div>
+          <div class="stat-card reveal">
+            <div class="stat-num">120+</div>
+            <div class="stat-label">Happy Clients</div>
+          </div>
+          <div class="stat-card reveal">
+            <div class="stat-num">45+</div>
+            <div class="stat-label">Photo Shoots</div>
+          </div>
+          <div class="stat-card reveal">
+            <div class="stat-num">4+</div>
+            <div class="stat-label">Years Experience</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── RESUME ── -->
+  <section id="resume">
+    <p class="section-label">My Background</p>
+    <h2 class="section-title">My <em>Resume</em></h2>
+    <div class="section-rule"></div>
+    <div class="resume-grid">
+      <div class="resume-col">
+        <h3><i class="fas fa-graduation-cap"></i> Education</h3>
+        <div class="timeline">
+          <div class="tl-item reveal">
+            <div class="tl-date">2019 – 2022</div>
+            <div class="tl-title">Dip. PSCM (Purchasing and Supplies Chain Management)</div>
+            <div class="tl-org">The Cooperative University Of Kenya</div>
+            <div class="tl-desc">Specialised in procurement, logistics, inventory control, and supplier relationship management to optimize supply chain operations and reduce costs.</div>
+          </div>
+          <div class="tl-item reveal">
+            <div class="tl-date">2017 – Present</div>
+            <div class="tl-title">Digital Photography Certification</div>
+            <div class="tl-org">Self-taught Photographer</div>
+            <div class="tl-desc">Trained in studio, portrait, and documentary photography. Developed a signature post-processing style.</div>
+          </div>
+          <div class="tl-item reveal">
+            <div class="tl-date">2023 - 2025</div>
+            <div class="tl-title">Front-End Web Developer / Advanced React & TypeScript</div>
+            <div class="tl-org">Fin Church Aid, Learning Lions Kenya and Online — W3schools, freeCodeCamp, Code.org / Self-taught</div>
+            <div class="tl-desc">Completed advanced front-end certifications covering TypeScript, Next.js, and Supabase.</div>
+          </div>
+        </div>
+      </div>
+      <div class="resume-col">
+        <h3><i class="fas fa-briefcase"></i> Experience</h3>
+        <div class="timeline">
+          <div class="tl-item reveal">
+            <div class="tl-date">2025 – Present</div>
+            <div class="tl-title">Freelance Web Developer</div>
+            <div class="tl-org">Self-employed, Nairobi</div>
+            <div class="tl-desc">Building responsive web apps and e-commerce platforms for startups and SMEs across Kenya. Stack: React, TypeScript, Supabase, Tailwind.</div>
+          </div>
+          <div class="tl-item reveal">
+            <div class="tl-date">2023 – 2025</div>
+            <div class="tl-title">Front-End Developer</div>
+            <div class="tl-org">Learning Lions Kenya, Fin Church Aid, Nairobi Kenya</div>
+            <div class="tl-desc">Built and maintained client-facing dashboards and marketing sites. Reduced page load time by 40% through performance optimisation.</div>
+          </div>
+          <div class="tl-item reveal">
+            <div class="tl-date">2018 – Present</div>
+            <div class="tl-title">Freelance Photographer</div>
+            <div class="tl-org">Clix Visuals, Nairobi</div>
+            <div class="tl-desc">Covering events, portraits, and documentary photography. Published work featured in local galleries and online publications.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills -->
+      <div class="resume-col">
+        <h3><i class="fas fa-code"></i> Dev Skills</h3>
+        <div class="skills-list">
+          <div class="skill-item">
+            <div class="skill-meta"><span>HTML / CSS</span><span class="skill-pct">90%</span></div>
+            <div class="skill-bar"><div class="skill-fill" data-w="90"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-meta"><span>JavaScript</span><span class="skill-pct">78%</span></div>
+            <div class="skill-bar"><div class="skill-fill" data-w="78"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-meta"><span>React / TypeScript</span><span class="skill-pct">72%</span></div>
+            <div class="skill-bar"><div class="skill-fill" data-w="72"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-meta"><span>Supabase / Firebase</span><span class="skill-pct">68%</span></div>
+            <div class="skill-bar"><div class="skill-fill" data-w="68"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="resume-col">
+        <h3><i class="fas fa-camera"></i> Creative Skills</h3>
+        <div class="skills-list">
+          <div class="skill-item">
+            <div class="skill-meta"><span>Photography</span><span class="skill-pct">98%</span></div>
+            <div class="skill-bar"><div class="skill-fill" data-w="98"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-meta"><span>Photo Editing / Lightroom</span><span class="skill-pct">88%</span></div>
+            <div class="skill-bar"><div class="skill-fill" data-w="88"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-meta"><span>UI/UX Design / Figma</span><span class="skill-pct">75%</span></div>
+            <div class="skill-bar"><div class="skill-fill" data-w="75"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-meta"><span>AI Prompting / Tools</span><span class="skill-pct">80%</span></div>
+            <div class="skill-bar"><div class="skill-fill" data-w="80"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-meta"><span>Graphic Design / Adobe Creative Suite</span><span class="skill-pct">60%</span></div>
+            <div class="skill-bar"><div class="skill-fill" data-w="60"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-meta"><span>Videography/Editing</span><span class="skill-pct">70%</span></div>
+            <div class="skill-bar"><div class="skill-fill" data-w="70"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="resume-download">
+        <a href="https://docs.google.com/document/d/1klPXr0Ho9b05wbGOhC1if9hiz7gHBZRA4XxhmP6qEjk/edit?tab=t.0" target="_blank" class="btn-primary" style="font-size:0.88rem;">
+          <i class="fas fa-download"></i> Download Full Resume
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PORTFOLIO ── -->
+  <section id="portfolio">
+    <p class="section-label">Selected Work</p>
+    <h2 class="section-title">My <em>Portfolio</em></h2>
+    <div class="section-rule"></div>
+    <div class="filter-row">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="web">Web Development</button>
+      <button class="filter-btn" data-filter="photo">Photography</button>
+    </div>
+    <div class="portfolio-grid" id="portfolioGrid">
+
+      <!-- WEB: Anonymouswithatok -->
+      <div class="port-card reveal" data-cat="web">
+        <div class="port-thumb">
+          <div class="port-thumb-placeholder" style="background:linear-gradient(135deg,#1a0a04,#3a1a08);">
+            <span style="font-size:2.8rem;">🎭</span>
+            <span style="font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(224,108,78,0.8);">JavaScript</span>
+          </div>
+          <span class="port-cat-badge">Web Dev</span>
+          <div class="port-overlay">
+            <a href="https://github.com/Ronnieatok/Anonymouswithatok" target="_blank"><i class="fab fa-github"></i> View on GitHub</a>
+          </div>
+        </div>
+        <div class="port-body">
+          <div class="port-title">Anonymouswithatok</div>
+          <div class="port-desc">Anonymous social platform for open, judgment-free expression — no login required.</div>
+          <div class="port-tags"><span class="port-tag">JavaScript</span><span class="port-tag">HTML</span><span class="port-tag">CSS</span></div>
+        </div>
+      </div>
+
+      <!-- WEB: Soma Nami -->
+      <div class="port-card reveal" data-cat="web">
+        <div class="port-thumb">
+          <div class="port-thumb-placeholder" style="background:linear-gradient(135deg,#061610,#0e2a1e);">
+            <span style="font-size:2.8rem;">📚</span>
+            <span style="font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(100,220,140,0.8);">TypeScript</span>
+          </div>
+          <span class="port-cat-badge">Web Dev</span>
+          <div class="port-overlay">
+            <a href="https://github.com/Ronnieatok/soma-nami" target="_blank"><i class="fab fa-github"></i> View on GitHub</a>
+          </div>
+        </div>
+        <div class="port-body">
+          <div class="port-title">Soma Nami</div>
+          <div class="port-desc">"Read With Me" — a Swahili reading companion app celebrating Kenyan literature.</div>
+          <div class="port-tags"><span class="port-tag">TypeScript</span><span class="port-tag">React</span></div>
+        </div>
+      </div>
+
+      <!-- WEB: Kicks by Vinny -->
+      <div class="port-card reveal" data-cat="web">
+        <div class="port-thumb">
+          <div class="port-thumb-placeholder" style="background:linear-gradient(135deg,#180808,#2a1010);">
+            <span style="font-size:2.8rem;">👟</span>
+            <span style="font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(224,108,78,0.8);">E-Commerce</span>
+          </div>
+          <span class="port-cat-badge">Web Dev</span>
+          <div class="port-overlay">
+            <a href="https://github.com/Ronnieatok/Kicksbyvinny" target="_blank"><i class="fab fa-github"></i> View on GitHub</a>
+          </div>
+        </div>
+        <div class="port-body">
+          <div class="port-title">Kicks by Vinny</div>
+          <div class="port-desc">Sleek sneaker e-commerce storefront with WhatsApp checkout for Nairobi market.</div>
+          <div class="port-tags"><span class="port-tag">HTML</span><span class="port-tag">CSS</span><span class="port-tag">JavaScript</span></div>
+        </div>
+      </div>
+
+      <!-- WEB: Ninoma Blog -->
+      <div class="port-card reveal" data-cat="web">
+        <div class="port-thumb">
+          <div class="port-thumb-placeholder" style="background:linear-gradient(135deg,#1a1408,#2a1c08);">
+            <span style="font-size:2.8rem;">✍️</span>
+            <span style="font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(240,192,96,0.8);">Blog</span>
+          </div>
+          <span class="port-cat-badge">Web Dev</span>
+          <div class="port-overlay">
+            <a href="https://github.com/Ronnieatok/ninomablog" target="_blank"><i class="fab fa-github"></i> View on GitHub</a>
+          </div>
+        </div>
+        <div class="port-body">
+          <div class="port-title">Ninoma Blog</div>
+          <div class="port-desc">Content-first blog built in pure HTML/CSS — blazing fast and beautifully readable.</div>
+          <div class="port-tags"><span class="port-tag">HTML</span><span class="port-tag">CSS</span></div>
+        </div>
+      </div>
+
+      <!-- WEB: Ronnieatok CV -->
+      <div class="port-card reveal" data-cat="web">
+        <div class="port-thumb">
+          <div class="port-thumb-placeholder" style="background:linear-gradient(135deg,#060d1a,#0c1d2e);">
+            <span style="font-size:2.8rem;">📄</span>
+            <span style="font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(100,160,240,0.8);">TypeScript</span>
+          </div>
+          <span class="port-cat-badge">Web Dev</span>
+          <div class="port-overlay">
+            <a href="https://github.com/Ronnieatok/ronnieatokcv" target="_blank"><i class="fab fa-github"></i> View on GitHub</a>
+          </div>
+        </div>
+        <div class="port-body">
+          <div class="port-title">Ronnieatok CV</div>
+          <div class="port-desc">Interactive web-based CV in TypeScript — a living résumé with full print support.</div>
+          <div class="port-tags"><span class="port-tag">TypeScript</span><span class="port-tag">React</span></div>
+        </div>
+      </div>
+
+      <!-- PHOTO: Portrait Series -->
+      <div class="port-card reveal" data-cat="photo">
+        <div class="port-thumb">
+          <div class="port-thumb-placeholder" style="background:linear-gradient(135deg,#0a0a0a,#2a1a10);">
+            <span style="font-size:3rem;">📷</span>
+            <span style="font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(224,108,78,0.7);">Portrait</span>
+          </div>
+          <span class="port-cat-badge" style="background:#2a2a2a;">Photography</span>
+          <div class="port-overlay">
+            <a href="https://instagram.com/notjustatok" target="_blank"><i class="fab fa-instagram"></i> View on Instagram</a>
+          </div>
+        </div>
+        <div class="port-body">
+          <div class="port-title">Portrait Sessions</div>
+          <div class="port-desc">Studio and location portrait work — capturing personality, mood, and raw humanity.</div>
+          <div class="port-tags"><span class="port-tag">Portrait</span><span class="port-tag">Studio</span><span class="port-tag">Lightroom</span></div>
+        </div>
+      </div>
+
+      <!-- PHOTO: Street Documentary -->
+      <div class="port-card reveal" data-cat="photo">
+        <div class="port-thumb">
+          <div class="port-thumb-placeholder" style="background:linear-gradient(135deg,#1a1010,#3a2010);">
+            <span style="font-size:3rem;">🏙️</span>
+            <span style="font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(224,108,78,0.7);">Street</span>
+          </div>
+          <span class="port-cat-badge" style="background:#2a2a2a;">Photography</span>
+          <div class="port-overlay">
+            <a href="https://instagram.com/notjustatok" target="_blank"><i class="fab fa-instagram"></i> View on Instagram</a>
+          </div>
+        </div>
+        <div class="port-body">
+          <div class="port-title">Nairobi Streets Series</div>
+          <div class="port-desc">Documentary photography exploring Nairobi's layers — markets, matatus, and moments.</div>
+          <div class="port-tags"><span class="port-tag">Street</span><span class="port-tag">Documentary</span></div>
+        </div>
+      </div>
+
+      <!-- WEB: Maureen Valentine -->
+      <div class="port-card reveal" data-cat="web">
+        <div class="port-thumb">
+          <div class="port-thumb-placeholder" style="background:linear-gradient(135deg,#1a0610,#2e0f1e);">
+            <span style="font-size:2.8rem;">💝</span>
+            <span style="font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(240,100,140,0.8);">Creative</span>
+          </div>
+          <span class="port-cat-badge">Web Dev</span>
+          <div class="port-overlay">
+            <a href="https://github.com/Ronnieatok/maureen-s-valentine-design" target="_blank"><i class="fab fa-github"></i> View on GitHub</a>
+          </div>
+        </div>
+        <div class="port-body">
+          <div class="port-title">Maureen's Valentine Design</div>
+          <div class="port-desc">Bespoke animated web experience — a personalised digital gift with CSS particle effects.</div>
+          <div class="port-tags"><span class="port-tag">HTML</span><span class="port-tag">CSS</span><span class="port-tag">Animations</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="display:flex;justify-content:center;margin-top:2.5rem;">
+      <a href="https://github.com/Ronnieatok" target="_blank" class="btn-outline">
+        <i class="fab fa-github"></i> View All on GitHub
+      </a>
+    </div>
+  </section>
+
+  <!-- ── TESTIMONIALS ── -->
+  <section id="testimonials">
+    <p class="section-label">What People Say</p>
+    <h2 class="section-title">Client <em>Testimonials</em></h2>
+    <div class="section-rule"></div>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-quote-icon">"</div>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">
+          Ronnie built our entire business website from scratch and it looked incredible. He understood exactly what we needed — clean, fast, and mobile-first. The turnaround was faster than expected and he was easy to communicate with throughout.
+        </p>
+        <div class="testi-author">
+          <div class="testi-avatar">A</div>
+          <div>
+            <div class="testi-name">Amina Wanjiku</div>
+            <div class="testi-role">Founder, Nairobi Craft Co.</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-quote-icon">"</div>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">
+          We hired Ronnie for our product launch photoshoot and the results were beyond what we imagined. His eye for composition and lighting is outstanding. The photos told a story that our marketing team loved. Will definitely work with him again.
+        </p>
+        <div class="testi-author">
+          <div class="testi-avatar">D</div>
+          <div>
+            <div class="testi-name">Daniel Ochieng</div>
+            <div class="testi-role">Marketing Manager, BrandPulse KE</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-quote-icon">"</div>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">
+          Working with Ronnie was seamless. He redesigned our e-commerce platform and sales improved noticeably within weeks. His attention to UX details is what really sets him apart — he thinks beyond just how things look.
+        </p>
+        <div class="testi-author">
+          <div class="testi-avatar">F</div>
+          <div>
+            <div class="testi-name">Faith Kamau</div>
+            <div class="testi-role">CEO, StyleHive Kenya</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ── -->
+  <section id="contact">
+    <p class="section-label">Get In Touch</p>
+    <h2 class="section-title">Contact <em>Me</em></h2>
+    <div class="section-rule"></div>
+    <div class="contact-grid">
+      <div>
+        <p class="contact-intro">
+          Have a project in mind, need a photographer, or just want to say hello? I'm always open to new collaborations and conversations. Drop me a message — I reply within 24 hours.
+        </p>
+        <div class="contact-info">
+          <div class="cinfo-item">
+            <div class="cinfo-icon"><i class="fas fa-envelope"></i></div>
+            <div>
+              <div class="cinfo-label">Email</div>
+              <div class="cinfo-val"><a href="mailto:ronnieatok@gmail.com">ronnieatok@gmail.com</a></div>
+            </div>
+          </div>
+          <div class="cinfo-item">
+            <div class="cinfo-icon"><i class="fab fa-whatsapp"></i></div>
+            <div>
+              <div class="cinfo-label">WhatsApp</div>
+              <div class="cinfo-val"><a href="https://wa.me/254705902590">+254 705 902 590</a></div>
+            </div>
+          </div>
+          <div class="cinfo-item">
+            <div class="cinfo-icon"><i class="fab fa-instagram"></i></div>
+            <div>
+              <div class="cinfo-label">Instagram</div>
+              <div class="cinfo-val"><a href="https://instagram.com/notjustatok" target="_blank">@notjustatok</a></div>
+            </div>
+          </div>
+          <div class="cinfo-item">
+            <div class="cinfo-icon"><i class="fab fa-github"></i></div>
+            <div>
+              <div class="cinfo-label">GitHub</div>
+              <div class="cinfo-val"><a href="https://github.com/Ronnieatok" target="_blank">Ronnieatok</a></div>
+            </div>
+          </div>
+          <div class="cinfo-item">
+            <div class="cinfo-icon"><i class="fab fa-linkedin-in"></i></div>
+            <div>
+              <div class="cinfo-label">LinkedIn</div>
+              <div class="cinfo-val"><a href="https://linkedin.com/in/ronnieatok" target="_blank">Ronnie Atok</a></div>
+            </div>
+          </div>
+          <div class="cinfo-item">
+            <div class="cinfo-icon"><i class="fab fa-facebook-f"></i></div>
+            <div>
+              <div class="cinfo-label">Facebook</div>
+              <div class="cinfo-val"><a href="https://facebook.com/ronnie.atok.1998" target="_blank">Ronnie Atok</a></div>
+            </div>
+          </div>
+          <div class="cinfo-item">
+            <div class="cinfo-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div>
+              <div class="cinfo-label">Location</div>
+              <div class="cinfo-val">Nairobi, Kenya</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <form class="contact-form" id="contactForm">
+        <div class="form-row">
+          <div class="fg">
+            <label class="fl">Your Name</label>
+            <input class="fi" type="text" placeholder="John Doe" required/>
+          </div>
+          <div class="fg">
+            <label class="fl">Email Address</label>
+            <input class="fi" type="email" placeholder="john@example.com" required/>
+          </div>
+        </div>
+        <div class="fg">
+          <label class="fl">Subject</label>
+          <input class="fi" type="text" placeholder="Project enquiry / Photoshoot booking"/>
+        </div>
+        <div class="fg">
+          <label class="fl">Message</label>
+          <textarea class="fi" placeholder="Tell me about your project or idea…" required></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="align-self:flex-start;">
+          <i class="fas fa-paper-plane"></i> Send Message
+        </button>
+        <p class="thanks-msg" id="thanksMsg">✓ Message sent — I'll be in touch soon!</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">Ronnie<span>.</span>Atok</div>
+      <ul class="footer-nav">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#resume">Resume</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="footer-thanks">— Thanks for your patience! —</div>
+      <div class="footer-socials" style="display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center;">
+        <a href="https://github.com/Ronnieatok" target="_blank" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:#9a9a9a;font-size:0.85rem;text-decoration:none;transition:all 0.3s;"><i class="fab fa-github"></i></a>
+        <a href="https://instagram.com/notjustatok" target="_blank" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:#9a9a9a;font-size:0.85rem;text-decoration:none;transition:all 0.3s;"><i class="fab fa-instagram"></i></a>
+        <a href="https://wa.me/254705902590" target="_blank" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:#9a9a9a;font-size:0.85rem;text-decoration:none;transition:all 0.3s;"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://facebook.com/ronnie.atok.1998" target="_blank" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:#9a9a9a;font-size:0.85rem;text-decoration:none;transition:all 0.3s;"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://linkedin.com/in/ronnieatok" target="_blank" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:#9a9a9a;font-size:0.85rem;text-decoration:none;transition:all 0.3s;"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+      <div class="footer-copy">
+        © <span id="footerYear"></span> Ronnie Atok. All rights reserved.<br>
+        Web Developer &amp; Photographer · Nairobi, Kenya
+      </div>
+    </div>
+  </footer>
+
+</main><!-- /main -->
+
+<script>
+/* ── HAMBURGER MENU FUNCTIONALITY ── */
+(function() {
+    // Wait for DOM to be ready
+    function init() {
+        const hamburger = document.getElementById('mobToggle');
+        const sidebar = document.getElementById('sidebar');
+        
+        if (!hamburger || !sidebar) return;
+        
+        // Create overlay
+        const overlay = document.createElement('div');
+        overlay.className = 'sidebar-overlay';
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 299;
+            display: none;
+            cursor: pointer;
+        `;
+        document.body.appendChild(overlay);
+        
+        // Toggle function
+        function toggleMenu() {
+            sidebar.classList.toggle('open');
+            hamburger.classList.toggle('open');
+            overlay.style.display = sidebar.classList.contains('open') ? 'block' : 'none';
+            document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+        }
+        
+        // Event listeners
+        hamburger.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+        
+        // Close menu when clicking links (for mobile)
+        document.querySelectorAll('.sidebar-nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 900 && sidebar.classList.contains('open')) {
+                    toggleMenu();
+                }
+            });
+        });
+        
+        // Reset on window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 900 && sidebar.classList.contains('open')) {
+                toggleMenu();
+            }
+        });
+    }
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+
+/* ── MARK JS AS READY (enables reveal animations safely) ── */
+document.documentElement.classList.add('js-ready');
+
+/* ── FOOTER YEAR ── */
+document.getElementById('footerYear').textContent = new Date().getFullYear();
+
+/* ── ACTIVE NAV ON SCROLL ── */
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.sidebar-nav a');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => {
+    if(window.scrollY >= s.offsetTop - 120) cur = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+  });
+}, { passive: true });
+
+/* ── PORTFOLIO FILTER ── */
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    document.querySelectorAll('.port-card').forEach((card, i) => {
+      const match = f === 'all' || card.dataset.cat === f;
+      if(match){
+        card.style.display = '';
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(16px)';
+        setTimeout(() => {
+          card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+          card.style.opacity   = '1';
+          card.style.transform = 'none';
+        }, i * 60);
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+});
+
+/* ── SCROLL REVEAL ── */
+function activateReveal(el, delay){
+  setTimeout(() => el.classList.add('in'), delay || 0);
+}
+const revealEls = document.querySelectorAll('.reveal');
+
+// Fire immediately for any element already in viewport (page load)
+function checkReveal(){
+  revealEls.forEach((el, i) => {
+    const rect = el.getBoundingClientRect();
+    const inView = rect.top < window.innerHeight - 40 && rect.bottom > 0;
+    if(inView) activateReveal(el, i * 60);
+  });
+}
+
+// IntersectionObserver for elements below fold
+if('IntersectionObserver' in window){
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if(e.isIntersecting){
+        activateReveal(e.target, i * 60);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0, rootMargin: '0px 0px -30px 0px' });
+  revealEls.forEach(el => io.observe(el));
+}
+
+// Fallback: activate everything after 800ms no matter what
+setTimeout(() => {
+  document.querySelectorAll('.reveal:not(.in)').forEach((el, i) => {
+    activateReveal(el, i * 40);
+  });
+}, 800);
+
+// Run on load + scroll
+checkReveal();
+window.addEventListener('scroll', checkReveal, { passive: true });
+
+/* ── SKILL BARS ── */
+const skillIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.skill-fill').forEach(bar => {
+        bar.style.width = bar.dataset.w + '%';
+      });
+      skillIO.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.skills-list').forEach(el => skillIO.observe(el));
+
+/* ── CONTACT FORM ── */
+const contactForm = document.getElementById('contactForm');
+if(contactForm) {
+  contactForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const msg = document.getElementById('thanksMsg');
+    msg.style.display = 'block';
+    this.reset();
+    setTimeout(() => { msg.style.display = 'none'; }, 4000);
+  });
+}
+
+/* ── TOAST NOTIFICATION ── */
+function showToast(msg){
+  let t = document.getElementById('siteToast');
+  if(!t){
+    t = document.createElement('div');
+    t.id = 'siteToast';
+    t.style.cssText = `
+      position:fixed;bottom:2rem;right:2rem;z-index:9999;
+      background:#1a1a1a;color:#fff;
+      padding:0.9rem 1.5rem;border-radius:12px;
+      font-family:'DM Sans',sans-serif;font-size:0.88rem;
+      box-shadow:0 8px 32px rgba(0,0,0,0.25);
+      border-left:4px solid #e06c4e;
+      transform:translateY(20px);opacity:0;
+      transition:all 0.35s ease;max-width:320px;
+    `;
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  requestAnimationFrame(() => {
+    t.style.transform = 'translateY(0)';
+    t.style.opacity = '1';
+  });
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => {
+    t.style.transform = 'translateY(20px)';
+    t.style.opacity = '0';
+  }, 3500);
+}
+
+// Smooth scroll for all anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    const href = this.getAttribute('href');
+    if(href === '#') {
+      e.preventDefault();
+      showToast('📄 Resume PDF coming soon! Email me at ronnieatok@gmail.com');
+    } else if(href !== '#') {
+      const target = document.querySelector(href);
+      if(target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  });
+});
+
+// Add hover effects for footer social links
+document.querySelectorAll('.footer-socials a').forEach(link => {
+  link.addEventListener('mouseenter', function() {
+    this.style.background = '#e06c4e';
+    this.style.borderColor = '#e06c4e';
+    this.style.color = '#fff';
+  });
+  link.addEventListener('mouseleave', function() {
+    this.style.background = '';
+    this.style.borderColor = 'rgba(255,255,255,0.12)';
+    this.style.color = '#9a9a9a';
+  });
+});
+</script>
+
+</body>
+</html>
